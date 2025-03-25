@@ -20,5 +20,5 @@ cd flashcard-app
 
 ## Update
 
-- added `save` and  `load` methods to flashcards
-- removed debuggers
+- Added `save` and  `load` methods to flashcards.
+- Removed uneccessary debuggers.
