@@ -17,3 +17,9 @@ To get started with the project, clone the repository and install any necessary 
 git clone https://github.com/yourusername/flashcard-app.git
 cd flashcard-app
 ```
+
+## Update
+
+- added `save` and  `load` methods to flashcards
+- removed debuggers
+- 
