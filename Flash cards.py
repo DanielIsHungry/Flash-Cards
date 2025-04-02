@@ -9,7 +9,7 @@ def save(name: str, data) -> None: # Not my code
 def load(name: str):
     with open(name, "rb") as file:
         return pickle.load(file)
-def get_dynamic_font_size(text, base_font_size=30, min_font_size=10, max_font_size=40):
+def get_dynamic_font_size(text, base_font_size=30, min_font_size=20, max_font_size=40):
     font_size = base_font_size - len(text) // 5
     font_size = max(min_font_size, min(font_size, max_font_size))
     return font_size
@@ -81,25 +81,25 @@ class FlashcardMaker(tk.Toplevel):
         scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
 
         self.label = tk.Label(scrollable_frame, text='YOUR FLASHCARDS:\nNone', wraplength=300, justify='left')
-        self.label.pack(pady=20, padx=20, anchor="w")
+        self.label.pack(pady=20, padx=20, anchor="e")
 
         add_new_button = tk.Button(self, text='Add new flashcard', font=('Ariel', 15), relief=tk.GROOVE, command=self.add_new_flashcard)
-        add_new_button.pack(padx=20, pady=20)
+        add_new_button.pack(padx=20, pady=20, anchor="e")
 
         remove_flashcard = tk.Button(self, text='Remove a flashcard', font=('Ariel', 15), relief=tk.GROOVE, command=self.remove_flashcard)
-        remove_flashcard.pack(padx=20, pady=20)
+        remove_flashcard.pack(padx=20, pady=20, anchor="e")
 
         remove_all_button = tk.Button(self, text='Remove all flashcards', font=('Ariel', 15), relief=tk.GROOVE, command=self.remove_all)
-        remove_all_button.pack(padx=20, pady=20)
+        remove_all_button.pack(padx=20, pady=20, anchor="e")
 
         save_and_close_button = tk.Button(self, text='Load a save', font=('Ariel', 15), relief=tk.GROOVE, command=self.load_saved_flashcards)
-        save_and_close_button.pack(padx=20, pady=20)
+        save_and_close_button.pack(padx=20, pady=20, anchor="e")
 
         save_and_close_button = tk.Button(self, text='Save current flashcards', font=('Ariel', 15), relief=tk.GROOVE, command=self.save_current_flashcards)
-        save_and_close_button.pack(padx=20, pady=20)
+        save_and_close_button.pack(padx=20, pady=20, anchor="e")
 
         save_and_close_button = tk.Button(self, text='Save and close', font=('Ariel', 15), relief=tk.GROOVE, command=lambda: self.destroy())
-        save_and_close_button.pack(padx=20, pady=20)
+        save_and_close_button.pack(padx=20, pady=20, anchor="e")
 
         canvas.bind_all("<MouseWheel>", lambda e: canvas.yview_scroll(-1 * (e.delta // 120), "units"))
 
@@ -192,7 +192,7 @@ class FlashcardMaker(tk.Toplevel):
         submit.pack()
 
     def edit_warplength(self):
-        wrap_length = self.winfo_width() - 300
+        wrap_length = self.winfo_width() - 350
         self.label.config(wraplength=wrap_length)
         self.after(10, self.edit_warplength)
 
@@ -304,8 +304,19 @@ class App(tk.Tk):
                 return
         except Exception:
             return
+
+        sc = 0
+        mt = ""
+        for i, letter in enumerate(text):
+            if letter == ' ':
+                sc += 1
+                if sc == 10:
+                    mt += '\n'
+                    sc = 0
+            mt += letter
+
         self.canvas.delete('all')
-        self.canvas.create_text(400, 200, text=text, font=('Arial', int(font)), fill='black')
+        self.canvas.create_text(400, 200, text=mt, font=('Arial', int(font)), fill='black', anchor='center')
 
     def show_flashcard(self):
         """Display current flashcard (question or answer)"""
